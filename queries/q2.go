@@ -2,7 +2,7 @@ package queries
 
 import (
 	"fmt"
-	"github.com/ISE-SMILE/corral"
+	"github.com/anatomi/corral"
 	"github.com/google/martian/v3/log"
 	"math"
 	"math/rand"

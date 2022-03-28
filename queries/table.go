@@ -47,6 +47,12 @@ func RandomRegion() string {
 	return Regions[i]
 }
 
+func RandomNation() string {
+	var Nations = [...]string{"GERMANY", "RUSSIA"}
+	i := rand.Intn(len(Nations))
+	return Nations[i]
+}
+
 type GenericTable struct {
 	Name      string
 	raw       []string

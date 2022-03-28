@@ -3,7 +3,7 @@ package queries
 import (
 	"bytes"
 	"fmt"
-	"github.com/ISE-SMILE/corral"
+	"github.com/anatomi/corral"
 	"io/ioutil"
 	"math"
 	"math/rand"

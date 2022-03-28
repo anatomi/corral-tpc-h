@@ -1,10 +1,18 @@
 {
 "query": 1,
-"backend": "local",
-"experiment": "1",
-"endpoint": "test",
-"undeploy": false,
-"randomize": true,
+"backend": "lambda",
+"experiment": "input",
+"verbose": true,
+"debug": true,
+"endpoint": "s3://corral-tpc-h",
+"lambdaS3Key": "corral.zip",
+"lambdaS3Bucket": "corral-tpc-h",
+"undeploy": true,
+"randomize": false,
 "validation": false,
-"cache": "redis"
+"cache": "",
+"lambdaManageRole": false,
+"lambdaRoleARN": "arn:aws:iam::915421645023:role/DefaultLambdaExecutionRole",
+"efsVPCSubnetIds": "subnet-0d7074104f3076c8b;subnet-0c85917ad6fb90dab;subnet-08dcc562fd3121abf",
+"efsVPCSecurityGroupIds": "sg-0164e5eb76e590b64"
 }

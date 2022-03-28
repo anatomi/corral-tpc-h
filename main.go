@@ -11,7 +11,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/ISE-SMILE/corral"
+	"github.com/anatomi/corral"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/tawalaya/corral_plus_tpch/queries"
@@ -82,6 +82,10 @@ func (c runConfig) SetupCache(options []corral.Option) []corral.Option {
 		return append(options, corral.WithLocalMemoryCache())
 	case "redis":
 		return append(options, corral.WithRedisBackedCache())
+	case "efs":
+		return append(options, corral.WithEFSBackedCache())
+	case "dynamodb":
+		return append(options, corral.WithDynamoDBBackedCache())
 
 	}
 	return options

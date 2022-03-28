@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ISE-SMILE/corral"
+	"github.com/anatomi/corral"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -65,7 +65,7 @@ func (q *Q1) Configure() []corral.Option {
 	return []corral.Option{
 		corral.WithInputs(inputTables(q, "lineitem")...),
 		corral.WithSplitSize(25 * 1024 * 1024),
-		corral.WithMapBinSize(100 * 1024 * 1024),
+		corral.WithMapBinSize(50 * 1024 * 1024),
 		corral.WithReduceBinSize(200 * 1024 * 1024),
 	}
 }
@@ -140,7 +140,7 @@ func (w *Q1) Map(key, value string, emitter corral.Emitter) {
 	}
 
 	if shipdate.(time.Time).Before(w.Shipdate) {
-		key, err := line.SelectWithMask(int(L_RETURNFLAG), int(L_LINESTATUS))
+		key, err := line.SelectWithMask(int(L_RETURNFLAG), int(L_LINESTATUS)) // GROUP BY
 		if err != nil {
 			log.Infof("failed to emit %s,+%v", key, err)
 			return
