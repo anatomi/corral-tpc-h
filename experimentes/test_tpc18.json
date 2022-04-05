@@ -7,7 +7,7 @@
 "endpoint": "s3://corral-tpc-h",
 "lambdaS3Key": "corral.zip",
 "lambdaS3Bucket": "corral-tpc-h",
-"undeploy": false,
+"undeploy": true,
 "randomize": false,
 "validation": false,
 "cache": "",
