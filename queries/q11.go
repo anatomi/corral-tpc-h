@@ -13,11 +13,11 @@ type Q11 struct {
 	Experiment
 	Nation   string
 	Fraction   float64
-	Sum float64
+	//Sum float64
 }
 
 func (q *Q11) Name() string {
-	return fmt.Sprintf("%s_tcph_q2_n%s_f%g", q.ShortName(), q.Nation, q.Fraction)
+	return fmt.Sprintf("%s_tcph_q11_n%s_f%g", q.ShortName(), q.Nation, q.Fraction)
 }
 
 func (q *Q11) Check(driver *corral.Driver) error {
@@ -28,6 +28,7 @@ func (q *Q11) Configure() []corral.Option {
 	inputs := [][]string{
 		inputTables(q, "supplier", "nation"),
 		inputTables(q, "partsupp"),
+		inputTables(q, "job1"),
 		inputTables(q, "job2"),
 		[]string{},
 	}
@@ -196,10 +197,11 @@ func (q Q11TotalAvaiableParts) Reduce(key string, values corral.ValueIterator, e
 		vals = append(vals, fmt.Sprintf("%s|%f|%f", partkey, suppyliercost, avaialbility))
 		sum_suppliercost_avialability += (suppyliercost * avaialbility)
 	}
-	q.q.Sum = sum_suppliercost_avialability
+
 	for _, v := range vals {
-		emitter.Emit("", fmt.Sprintf("%s", v))
+		emitter.Emit("", fmt.Sprintf("%s|%f", v, sum_suppliercost_avialability))
 	}
+
 }
 
 type Q11SelectValues struct{
@@ -208,7 +210,7 @@ type Q11SelectValues struct{
 
 func (q Q11SelectValues) Map(key, value string, emitter corral.Emitter) {
 	tab := GenericTable{
-		numFields: 3,
+		numFields: 4,
 	}
 	tab.Read(value)
 	partkey := tab.Get(0)
@@ -220,14 +222,16 @@ func (q Q11SelectValues) Map(key, value string, emitter corral.Emitter) {
 	if err != nil {
 		log.Infof("Error: %v", err)
 	}
-	emitter.Emit(partkey, fmt.Sprintf("%f|%f", supplycost, avaialbility))
+	total_sum, err := strconv.ParseFloat(tab.Get(3), 64)
+	emitter.Emit(partkey, fmt.Sprintf("%f|%f|%f", supplycost, avaialbility, total_sum))
 }
 
 func (q Q11SelectValues) Reduce(key string, values corral.ValueIterator, emitter corral.Emitter) {
 	tab := GenericTable{
-		numFields: 2,
+		numFields: 3,
 	}
 	sum := 0.0
+	total_sum := 0.0
 	for l := range values.Iter() {
 
 		tab.Read(l)
@@ -240,9 +244,13 @@ func (q Q11SelectValues) Reduce(key string, values corral.ValueIterator, emitter
 			log.Infof("Error: %v", err)
 		}
 		sum += (supplycost*avaialbility)
+		total_sum, err = strconv.ParseFloat(tab.Get(2), 64)
+		if err != nil {
+			log.Infof("Error: %v", err)
+		}
 	}
 
-	if sum > (q.q.Sum*q.q.Fraction) {
+	if sum > (total_sum*q.q.Fraction) {
 		err := emitter.Emit(key, fmt.Sprintf("|%.2f", sum))
 		if err != nil {
 			log.Infof("failed to emit %s,+%v", key, err)
