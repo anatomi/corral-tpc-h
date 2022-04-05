@@ -96,7 +96,17 @@ func (q *Q18) Create() []*corral.Job {
 		left:  &GenericTable{},
 		right: Customer(),
 		on:    [2]int{0, int(C_CUSTKEY)},
+		filter: [2]Projection{
+			nil,
+			func(table *GenericTable) []int {
+				return []int{
+					int(C_NAME), 
+				}
+			},
+		},
+		
 	}
+	// filter c_name,c_custkey,o_orderkey,o_orderdate,o_totalprice,sum(l_quantity)
 
 	return []*corral.Job{
 		corral.NewJob(orderJoin, orderJoin),
