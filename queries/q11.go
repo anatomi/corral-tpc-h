@@ -35,9 +35,9 @@ func (q *Q11) Configure() []corral.Option {
 
 	return []corral.Option{
 		corral.WithMultiStageInputs(inputs),
-		corral.WithSplitSize(25 * 1024 * 1024),
-		corral.WithMapBinSize(100 * 1024 * 1024),
-		corral.WithReduceBinSize(200 * 1024 * 1024),
+		corral.WithSplitSize(10 * 1024 * 1024),
+		corral.WithMapBinSize(50 * 1024 * 1024),
+		corral.WithReduceBinSize(100 * 1024 * 1024),
 	}
 }
 

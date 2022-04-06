@@ -78,6 +78,8 @@ func (c runConfig) SetupCache(options []corral.Option) []corral.Option {
 	}
 
 	switch c.Cache {
+	case "nocache":
+		return append(options, corral.WithNoCache())
 	case "local":
 		return append(options, corral.WithLocalMemoryCache())
 	case "redis":
@@ -302,9 +304,9 @@ func setup(c runConfig) (queries.Query, []corral.Option) {
 	}
 
 	//check if we want to run on a cloud platform
-	if !c.isLocal() && c.usesCache() {
+	/*if !c.isLocal() && c.usesCache() {
 		panic("need to implement this for cloud run mode!")
-	}
+	}*/
 
 	options = c.SetupCache(options)
 	return query, options
