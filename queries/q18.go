@@ -22,9 +22,9 @@ func (q *Q18) Check(driver *corral.Driver) error {
 
 func (q *Q18) Configure() []corral.Option {
 	return []corral.Option{
-		corral.WithSplitSize(20 * 1024 * 1024),
+		/*corral.WithSplitSize(20 * 1024 * 1024),
 		corral.WithMapBinSize(60 * 1024 * 1024),
-		corral.WithReduceBinSize(100 * 1024 * 1024),
+		corral.WithReduceBinSize(100 * 1024 * 1024),*/
 		corral.WithMultiStageInputs([][]string{
 			inputTables(q, "orders", "lineitem"),
 			inputTables(q, "customer"),

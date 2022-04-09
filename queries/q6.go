@@ -82,9 +82,9 @@ func (q *Q6) Read(m map[string]string) (err error) {
 func (q *Q6) Configure() []corral.Option {
 	return []corral.Option{
 		corral.WithInputs(inputTables(q, "lineitem")...),
-		corral.WithSplitSize(10 * 1024 * 1024),
+		/*corral.WithSplitSize(10 * 1024 * 1024),
 		corral.WithMapBinSize(50 * 1024 * 1024),
-		corral.WithReduceBinSize(100 * 1024 * 1024),
+		corral.WithReduceBinSize(100 * 1024 * 1024),*/
 	}
 }
 
@@ -145,13 +145,8 @@ func (w *Q6) Map(key, value string, emitter corral.Emitter) {
 	shipdate, _ := line.LookupAs("L_SHIPDATE", SQLDate)
 	//we could optimize this fruther by doing a sting length check before conferting to a string
 	where := quantity.(int64) < w.Quantity && math.Abs(discount.(float64)-w.Discount) <= 0.01 && shipdate.(time.Time).After(w.Before) && shipdate.(time.Time).Before(w.After)
-	log.Infof("DATE %v", shipdate)
-	log.Infof("BEFORE DATE %v", w.Before)
-	log.Infof("START DATE %b", shipdate.(time.Time).After(w.Before))
-	log.Infof("END DATE %b", shipdate.(time.Time).Before(w.After))
 
 	if where {
-		
 		extendedprice, _ := line.LookupAs("L_EXTENDEDPRICE", Float)
 		prod := discount.(float64) * extendedprice.(float64)
 		_ = emitter.Emit("revenue", fmt.Sprintf("%f", prod))
