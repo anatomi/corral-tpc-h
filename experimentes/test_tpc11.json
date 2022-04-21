@@ -13,6 +13,6 @@
     "cache": "",
     "lambdaManageRole": false,
     "lambdaRoleARN": "arn:aws:iam::915421645023:role/DefaultLambdaExecutionRole",
-    "efsVPCSubnetIds": "subnet-0d7074104f3076c8b;subnet-0c85917ad6fb90dab;subnet-08dcc562fd3121abf",
-    "efsVPCSecurityGroupIds": "sg-0164e5eb76e590b64"
+    "VPCSubnetIds": "subnet-0d7074104f3076c8b;subnet-0c85917ad6fb90dab;subnet-08dcc562fd3121abf",
+    "VPCSecurityGroupIds": "sg-0164e5eb76e590b64"
 }
